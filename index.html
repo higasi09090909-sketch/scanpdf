@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>스캔 PDF 열기</title>
+<style>
+  body { font-family: "Malgun Gothic", sans-serif; max-width: 480px; margin: 60px auto; padding: 0 20px; color: #333; text-align: center; }
+  a.btn { display: inline-block; margin-top: 16px; padding: 12px 24px; background: #2f6fde; color: #fff; border-radius: 8px; text-decoration: none; font-size: 17px; }
+  .path { margin-top: 14px; font-size: 13px; color: #888; word-break: break-all; }
+</style>
+</head>
+<body>
+<h2>📂 스캔 PDF 열기</h2>
+<p id="msg">외장하드의 PDF를 여는 중이에요…</p>
+<a id="btn" class="btn" href="#" style="display:none">PDF 열기</a>
+<p class="path" id="path"></p>
+<p class="path">열린 뒤에는 이 탭을 닫으셔도 돼요.</p>
+<script>
+  // 사용법: https://(아이디).github.io/scanpdf/?p=1-1. 한국소설/김영하-검은 꽃.pdf  (경로는 '1. 스캔' 폴더 아래)
+  var p = new URLSearchParams(location.search).get('p') || '';
+  p = p.replace(/\\/g, '/').replace(/^\/+/, '');
+  var msg = document.getElementById('msg');
+  var btn = document.getElementById('btn');
+  if (!p || p.split('/').indexOf('..') !== -1) {
+    msg.textContent = '링크에 파일 경로가 없거나 올바르지 않아요.';
+  } else {
+    var link = 'scanpdf://' + p.split('/').map(encodeURIComponent).join('/');
+    document.getElementById('path').textContent = p;
+    btn.href = link;
+    btn.style.display = 'inline-block';
+    msg.textContent = '자동으로 열리지 않으면 아래 버튼을 눌러 주세요.';
+    location.href = link;
+  }
+</script>
+</body>
+</html>
